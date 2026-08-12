@@ -154,7 +154,7 @@ All team members agree to follow this Charter throughout the Northstar Sprint an
 | Name | Role | Confirmed |
 |---|---|---|
 | Fredrick | Team Lead |Yes |
-| Stephen | Backend Developer |Confirmed |
+| Stephen | Backend Developer |Yes |
 | Mark | Database Developer | |
 | Maria | Frontend Developer |Yes |
 | Ibrahim | QA & Documentation | |
