@@ -1,0 +1,100 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #222;
+    line-height: 1.6;
+}
+
+header {
+    background: #111827;
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+header h1 {
+    margin-bottom: 5px;
+}
+
+main {
+    width: 90%;
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+section {
+    background: white;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    resize: vertical;
+    margin-bottom: 15px;
+}
+
+button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    margin: 5px;
+    background: #111827;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+.quick-questions {
+    margin-top: 25px;
+}
+
+.quick-questions h3 {
+    margin-bottom: 10px;
+}
+
+.response-box {
+    min-height: 150px;
+}
+
+#response {
+    padding: 15px;
+    background: #f4f6f8;
+    border-radius: 6px;
+}
+
+.history-box {
+    min-height: 150px;
+}
+
+#ticketHistory {
+    padding: 10px;
+}
+
+.ticket {
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #f4f6f8;
+    border-left: 4px solid #111827;
+}

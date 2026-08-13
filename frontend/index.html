@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Northstar Support</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Northstar Support</h1>
+        <p>Customer Support Assistant</p>
+    </header>
+
+    <main>
+
+        <section class="support-box">
+
+            <h2>How can we help you?</h2>
+
+            <textarea
+                id="questionInput"
+                placeholder="e.g. Where is my order #482133?"
+            ></textarea>
+
+            <button id="submitQuestion">
+                Submit Question
+            </button>
+
+            <div class="quick-questions">
+
+                <h3>Quick Questions</h3>
+
+                <button id="orderStatusButton">
+                    Sample: Order Status
+                </button>
+
+                <button id="returnButton">
+                    Sample: Returns
+                </button>
+
+                <button id="stockButton">
+                    Sample: Stock
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <section class="response-box">
+
+            <h2>Response</h2>
+
+            <div id="response">
+                <p>Submit a question to see a response.</p>
+            </div>
+
+        </section>
+
+
+        <section class="history-box">
+
+            <h2>Ticket History</h2>
+
+            <div id="ticketHistory">
+                <p>No tickets yet. Submit a question above.</p>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
