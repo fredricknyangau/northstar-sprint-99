@@ -157,6 +157,6 @@ All team members agree to follow this Charter throughout the Northstar Sprint an
 | Stephen | Backend Developer |Yes |
 | Mark | Database Developer |Yes |
 | Maria | Frontend Developer |Yes |
-| Ibrahim | QA & Documentation | |
+| Ibrahim | QA & Documentation |Yes|
 
-**Date:** ____________________
+**Date:** 11TH AUGUST 2026
