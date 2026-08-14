@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.database.connection import close_db_pool, init_db_pool
 from app.routes import orders, returns, support
-from app.database.connection import init_db_pool, close_db_pool
 
 app = FastAPI(title="Northstar Support Deflection MVP")
 
