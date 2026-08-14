@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <!-- Makes the page responsive on phones and smaller screens -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Northstar Customer Support</title>
+
+    <!-- Connects this HTML file to the CSS file -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         HEADER
+         Shows the Northstar name and a simple support link.
+    ====================================================== -->
+
+    <header class="site-header">
+
+        <div class="brand">
+
+            <div class="brand-mark">N</div>
+
+            <div>
+                <h1>NORTHSTAR</h1>
+                <span>Customer Support</span>
+            </div>
+
+        </div>
+
+        <button class="support-button" id="supportHome">
+            Support Home
+        </button>
+
+    </header>
+
+
+    <main class="container">
+
+
+        <!-- =================================================
+             INTRODUCTION
+        ================================================== -->
+
+        <section class="hero">
+
+            <p class="eyebrow">SELF-SERVICE SUPPORT</p>
+
+            <h2>How can we help you today?</h2>
+
+            <p>
+                Check your order, request a return, check your
+                refund, or check product availability.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SUPPORT OPTIONS
+             
+             These three cards represent the main support
+             actions demonstrated in the sample.
+        ================================================== -->
+
+        <section class="support-grid">
+
+
+            <!-- =================================================
+                 1. CHECK ORDER STATUS
+            ================================================== -->
+
+            <div class="support-card">
+
+                <h3>Check Order Status</h3>
+
+                <p class="description">
+                    Enter your Order ID to check current
+                    shipping and delivery details.
+                </p>
+
+                <div class="form-group">
+
+                    <label for="orderId">
+                        ORDER ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="orderId"
+                        placeholder="e.g. 18"
+                    >
+
+                </div>
+
+                <button
+                    class="primary-button"
+                    id="checkOrderButton"
+                >
+                    Check Status →
+                </button>
+
+
+                <!-- JavaScript will place the order result here -->
+                <div
+                    id="orderResult"
+                    class="result-box"
+                ></div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 2. INITIATE A RETURN
+            ================================================== -->
+
+            <div class="support-card">
+
+                <h3>Initiate a Return</h3>
+
+                <p class="description">
+                    Submit a return request for eligible
+                    delivered items.
+                </p>
+
+                <div class="form-group">
+
+                    <label for="returnOrderId">
+                        ORDER ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="returnOrderId"
+                        placeholder="e.g. 12"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="returnReason">
+                        REASON FOR RETURN
+                    </label>
+
+                    <input
+                        type="text"
+                        id="returnReason"
+                        placeholder="Wrong Brand"
+                    >
+
+                </div>
+
+
+                <button
+                    class="primary-button"
+                    id="submitReturnButton"
+                >
+                    Submit Return →
+                </button>
+
+
+                <!-- JavaScript will place the return result here -->
+                <div
+                    id="returnResult"
+                    class="result-box"
+                ></div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 3. CHECK RETURN STATUS
+            ================================================== -->
+
+            <div class="support-card">
+
+                <h3>Check Return Status</h3>
+
+                <p class="description">
+                    Look up approval and refund status of an
+                    active return request.
+                </p>
+
+                <div class="form-group">
+
+                    <label for="returnId">
+                        RETURN ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="returnId"
+                        placeholder="e.g. 1"
+                    >
+
+                </div>
+
+
+                <button
+                    class="primary-button"
+                    id="checkReturnButton"
+                >
+                    Check Status →
+                </button>
+
+
+                <!-- JavaScript will place the return status here -->
+                <div
+                    id="returnStatusResult"
+                    class="result-box"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SUPPORT INTENT CLASSIFIER
+             
+             This is the frontend demonstration from the
+             sample. It classifies a customer's message.
+        ================================================== -->
+
+        <section class="classifier">
+
+            <h3>Support Intent Classifier Demo</h3>
+
+            <p class="description">
+                Enter a customer support question to identify
+                the type of request.
+            </p>
+
+
+            <label for="supportMessage">
+                CUSTOMER SUPPORT QUERY
+            </label>
+
+            <div class="classifier-row">
+
+                <input
+                    type="text"
+                    id="supportMessage"
+                    placeholder="e.g. Where is my package?"
+                >
+
+                <button
+                    class="primary-button"
+                    id="classifyButton"
+                >
+                    Classify Query
+                </button>
+
+            </div>
+
+
+            <!-- Example questions -->
+            <div class="examples">
+
+                <span>Try:</span>
+
+                <button class="example-button">
+                    Where is my package?
+                </button>
+
+                <button class="example-button">
+                    I want to return an item
+                </button>
+
+                <button class="example-button">
+                    I need a refund
+                </button>
+
+                <button class="example-button">
+                    Is this product available?
+                </button>
+
+            </div>
+
+
+            <!-- JavaScript displays the classification here -->
+            <div
+                id="classificationResult"
+                class="classification-result"
+            ></div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             RECENT ORDERS
+             
+             These are simple frontend sample orders.
+             They do not connect to a database.
+        ================================================== -->
+
+        <section class="orders-section">
+
+            <p class="eyebrow">YOUR ACCOUNT</p>
+
+            <h2>Recent Orders</h2>
+
+            <div class="orders-grid">
+
+
+                <div class="order-card">
+
+                    <h3>Order #1024</h3>
+
+                    <p>Ordered August 10, 2026</p>
+
+                    <span class="status">
+                        Shipped
+                    </span>
+
+                    <p>Nike Air Max Shoes</p>
+
+                    <p>
+                        Size 42 · Quantity 1 · $129.99
+                    </p>
+
+                    <button
+                        class="primary-button order-button"
+                        data-order="1024"
+                    >
+                        View Order
+                    </button>
+
+                </div>
+
+
+
+                <div class="order-card">
+
+                    <h3>Order #1023</h3>
+
+                    <p>Ordered August 8, 2026</p>
+
+                    <span class="status delivered">
+                        Delivered
+                    </span>
+
+                    <p>Northstar Essential Hoodie</p>
+
+                    <p>
+                        Size M · Quantity 1 · $64.99
+                    </p>
+
+                    <button
+                        class="primary-button order-button"
+                        data-order="1023"
+                    >
+                        View Order
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="site-footer">
+
+        <strong>NORTHSTAR</strong> Customer Support MVP
+
+        <p>
+            Most questions can be resolved without contacting
+            an agent.
+        </p>
+
+    </footer>
+
+
+    <!-- Connects the HTML file to JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
