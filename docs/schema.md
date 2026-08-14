@@ -1,0 +1,61 @@
+# Support Deflection MVP — Database Schema
+
+## Database
+
+PostgreSQL
+
+## 1. Orders
+
+Stores customer order information required for order-status checks.
+
+| Column | Type | Constraints |
+|---|---|---|
+| id | SERIAL | PRIMARY KEY |
+| order_number | TEXT | UNIQUE, NOT NULL |
+| status | TEXT | NOT NULL |
+| created_at | TIMESTAMP | NOT NULL, DEFAULT NOW() |
+
+---
+
+## 2. Order Items
+
+Stores the individual products/items belonging to an order.
+
+| Column | Type | Constraints |
+|---|---|---|
+| id | SERIAL | PRIMARY KEY |
+| order_id | INTEGER | NOT NULL, FOREIGN KEY → orders.id |
+| item_name | TEXT | NOT NULL |
+| quantity | INTEGER | NOT NULL |
+
+---
+
+## 3. Returns
+
+Stores return requests associated with orders.
+
+| Column | Type | Constraints |
+|---|---|---|
+| id | SERIAL | PRIMARY KEY |
+| order_id | INTEGER | NOT NULL, FOREIGN KEY → orders.id |
+| reason | TEXT | NOT NULL |
+| status | TEXT | NOT NULL |
+| created_at | TIMESTAMP | NOT NULL, DEFAULT NOW() |
+
+Allowed return statuses:
+
+- pending
+- approved
+- refunded
+
+---
+
+# Relationships
+
+orders
+    ↓
+order_items
+
+orders
+    ↓
+returns
