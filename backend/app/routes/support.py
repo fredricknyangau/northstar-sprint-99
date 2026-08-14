@@ -1,5 +1,11 @@
 from fastapi import APIRouter
 
+from app.schemas.support import ClassifyRequest, ClassifyResponse
+from app.services.support import classify_text
+
 router = APIRouter()
 
-# TODO: Add support endpoints
+
+@router.post("/classify", response_model=ClassifyResponse)
+async def classify_support_query(payload: ClassifyRequest) -> ClassifyResponse:
+    return ClassifyResponse(**classify_text(payload.text))
