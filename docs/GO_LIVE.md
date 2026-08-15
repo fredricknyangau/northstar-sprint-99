@@ -1,0 +1,9 @@
+# Northstar Support Deflection MVP — go-live readiness (Issue #18)
+
+**Decision: not ready to launch.** The backend implements **order status** and **returns & refunds**. Order status reads an order by ID; return creation makes a pending record for an existing order; return status reads that record. Existing tests cover the order-status happy/not-found paths and classifier happy/fallback paths.
+
+The customer UI is not end-to-end: all three controls generate local, hard-coded responses and contain no `fetch()` calls. A customer can see “shipped” or “return created” for any non-empty ID without the backend. Product availability is out of scope: it is only a classifier example. Live API execution remains to be completed because QA dependency installation was blocked by a locked global package.
+
+Northstar should provision PostgreSQL; set `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD`; run migrations **001–004 in order**; then load `backend/app/database/seed.sql`. Install `backend/requirements.txt`, run tests from `backend`, start FastAPI on port 8000, and serve `frontend/` over HTTP after wiring its API base URL. Monitor 4xx/5xx rates, database connectivity, latency, and return-creation volume. Alert on spikes and retain request IDs. The backend owner should own API/database incidents, the frontend owner UI integration/customer messaging, and a named Northstar support/product owner return-policy decisions.
+
+Priority fixes: (1) integrate all UI flows with loading, not-found, and network-error states; (2) add authentication/ownership authorization, restricted CORS, and rate limits; (3) enforce non-blank reasons plus duplicate/refunded-return eligibility and use `201` for creation; (4) replace `innerHTML`, add `aria-live` and stronger focus styles; (5) add integration/edge-case tests and a production-like smoke test. Verify production error responses before launch.
