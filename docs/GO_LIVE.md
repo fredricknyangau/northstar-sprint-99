@@ -1,9 +1,35 @@
-# Northstar Support Deflection MVP — go-live readiness (Issue #18)
+# Northstar Retail Co. — Go-Live Readiness
 
-**Decision: not ready to launch.** The backend implements **order status** and **returns & refunds**. Order status reads an order by ID; return creation makes a pending record for an existing order; return status reads that record. Existing tests cover the order-status happy/not-found paths and classifier happy/fallback paths.
+## What Works
 
-The customer UI is not end-to-end: all three controls generate local, hard-coded responses and contain no `fetch()` calls. A customer can see “shipped” or “return created” for any non-empty ID without the backend. Product availability is out of scope: it is only a classifier example. Live API execution remains to be completed because QA dependency installation was blocked by a locked global package.
+The MVP supports two ticket-deflection categories end to end: order status and returns/refunds.
 
-Northstar should provision PostgreSQL; set `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD`; run migrations **001–004 in order**; then load `backend/app/database/seed.sql`. Install `backend/requirements.txt`, run tests from `backend`, start FastAPI on port 8000, and serve `frontend/` over HTTP after wiring its API base URL. Monitor 4xx/5xx rates, database connectivity, latency, and return-creation volume. Alert on spikes and retain request IDs. The backend owner should own API/database incidents, the frontend owner UI integration/customer messaging, and a named Northstar support/product owner return-policy decisions.
+- `GET /orders/{id}/status` returns real order status and product name from PostgreSQL.
+- `POST /returns` creates a return record after checking that the order exists.
+- `GET /returns/{id}/status` returns the current status of a return.
+- `POST /support/classify` classifies incoming text as `order_status` or `return_query` using keyword matching and returns a confidence score.
+- The frontend forms for order status, return initiation, and return status have been tested end to end against the live backend.
+- Invalid IDs receive `404` responses, and the frontend provides clear messaging when the server cannot be reached.
 
-Priority fixes: (1) integrate all UI flows with loading, not-found, and network-error states; (2) add authentication/ownership authorization, restricted CORS, and rate limits; (3) enforce non-blank reasons plus duplicate/refunded-return eligibility and use `201` for creation; (4) replace `innerHTML`, add `aria-live` and stronger focus styles; (5) add integration/edge-case tests and a production-like smoke test. Verify production error responses before launch.
+## Known Limitations
+
+- Stock/product availability, the third original ticket category, was not built. Scope was intentionally narrowed to order status and returns on Day 1.
+- The API has no authentication or rate limiting. This is acceptable for the demo only and must be addressed before real production use.
+- CORS currently allows all origins. This is appropriate for local development only and must be restricted before deployment.
+- There is no automated test suite; all testing has been manual with curl and browser-based checks.
+
+## What Northstar's Team Needs to Operate This
+
+1. Install and run PostgreSQL 16. Run the database migration files in `backend/app/database/migrations/` in numeric order. The current repository includes migrations `001` through `004`.
+2. Install Python 3.12 and the packages in `backend/requirements.txt`.
+3. Set database host, port, name, user, and password in the environment, using `backend/.env.example` as the reference.
+4. From the `backend` directory, start the API:
+
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+
+5. Open `frontend/index.html` in a browser, or serve the frontend through a static-file host.
+6. Refer to `docs/API.md` for endpoint documentation and `docs/QA_LOG.md` for known issues and resolutions.
+
+Before any deployment beyond the demo, add authentication, authorization, rate limiting, restricted CORS, and automated API/frontend tests.
