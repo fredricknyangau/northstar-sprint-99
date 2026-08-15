@@ -11,6 +11,35 @@
    elements that we created in the HTML file.
 ========================================================= */
 
+const API_BASE_URL ="https://localhost:80000";
+
+
+let currentOrderId = null;
+let currentReturnId = null;
+
+let orders = [];
+let returns = [];
+let products = [];
+
+
+const viewIds = [
+    "homeView",
+    "orderStatusView",
+    "returnRequestView",
+    "returnStatusView",
+    "supportView"
+];
+
+function showView(viewId) {
+
+    viewIds.forEach(function (id) {
+        const view = document.getElementById(id);
+        if (view) {
+            view.classList.remove("active");
+        }
+    });
+}
+
 const orderIdInput =
     document.getElementById("orderId");
 
