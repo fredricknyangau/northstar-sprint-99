@@ -11,7 +11,7 @@
    elements that we created in the HTML file.
 ========================================================= */
 
-const API_BASE_URL ="https://localhost:80000";
+const API_BASE_URL = "http://localhost:8000";
 
 
 let currentOrderId = null;
@@ -86,15 +86,10 @@ const classificationResult =
 /* =========================================================
    2. CHECK ORDER STATUS
 
-   For now this is frontend-only.
-
-   There is no backend or database available yet, so we
-   use sample data to demonstrate how the interface works.
-
-   Later, this section can be connected to the backend.
+   Calls GET /orders/{id}/status on the live backend.
 ========================================================= */
 
-checkOrderButton.addEventListener("click", function () {
+checkOrderButton.addEventListener("click", async function () {
 
     const orderId =
         orderIdInput.value.trim();
@@ -113,20 +108,54 @@ checkOrderButton.addEventListener("click", function () {
     }
 
 
-    /*
-        Sample frontend response.
+    try {
 
-        This is not a database query.
-        It only demonstrates the expected result.
-    */
+        const response =
+            await fetch(`${API_BASE_URL}/orders/${orderId}/status`);
 
-    orderResult.innerHTML = `
-        <strong>Order ID:</strong> #${orderId}<br>
-        <strong>Product:</strong> Designer Silk Scarf<br>
-        <strong>Current Status:</strong> Shipped
-    `;
 
-    orderResult.classList.add("show");
+        if (response.status === 404) {
+
+            orderResult.textContent =
+                "Order not found. Please check the ID and try again.";
+
+            orderResult.classList.add("show");
+
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            orderResult.textContent =
+                "Something went wrong. Please try again.";
+
+            orderResult.classList.add("show");
+
+            return;
+        }
+
+
+        const data =
+            await response.json();
+
+
+        orderResult.innerHTML = `
+            <strong>Order ID:</strong> #${data.id}<br>
+            <strong>Product:</strong> ${data.product_name}<br>
+            <strong>Current Status:</strong> ${data.status}
+        `;
+
+        orderResult.classList.add("show");
+
+
+    } catch (error) {
+
+        orderResult.textContent =
+            "Could not reach the server. Please try again shortly.";
+
+        orderResult.classList.add("show");
+    }
 
 });
 
@@ -135,13 +164,10 @@ checkOrderButton.addEventListener("click", function () {
 /* =========================================================
    3. INITIATE A RETURN
 
-   The user enters the Order ID and reason for the return.
-
-   Since there is no backend yet, we only display a sample
-   return request result.
+   Calls POST /returns on the live backend.
 ========================================================= */
 
-submitReturnButton.addEventListener("click", function () {
+submitReturnButton.addEventListener("click", async function () {
 
     const orderId =
         returnOrderIdInput.value.trim();
@@ -172,24 +198,63 @@ submitReturnButton.addEventListener("click", function () {
     }
 
 
-    /*
-        A temporary return ID is created for the
-        frontend demonstration.
-    */
+    try {
 
-    const returnId =
-        Math.floor(Math.random() * 90) + 10;
+        const response =
+            await fetch(`${API_BASE_URL}/returns`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    order_id: parseInt(orderId),
+                    reason: reason
+                })
+            });
 
 
-    returnResult.innerHTML = `
-        <strong>Return Request Created</strong><br>
-        Return ID: #${returnId}<br>
-        Order ID: #${orderId}<br>
-        Reason: ${reason}<br>
-        Initial Status: Pending
-    `;
+        if (response.status === 404) {
 
-    returnResult.classList.add("show");
+            returnResult.textContent =
+                "Order not found. Please check the Order ID.";
+
+            returnResult.classList.add("show");
+
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            returnResult.textContent =
+                "Something went wrong creating the return.";
+
+            returnResult.classList.add("show");
+
+            return;
+        }
+
+
+        const data =
+            await response.json();
+
+
+        returnResult.innerHTML = `
+            <strong>Return Request Created</strong><br>
+            Return ID: #${data.id}<br>
+            Order ID: #${data.order_id}<br>
+            Reason: ${data.reason}<br>
+            Initial Status: ${data.status}
+        `;
+
+        returnResult.classList.add("show");
+
+
+    } catch (error) {
+
+        returnResult.textContent =
+            "Could not reach the server. Please try again shortly.";
+
+        returnResult.classList.add("show");
+    }
 
 });
 
@@ -198,11 +263,10 @@ submitReturnButton.addEventListener("click", function () {
 /* =========================================================
    4. CHECK RETURN STATUS
 
-   This demonstrates the expected frontend response when
-   a customer enters a Return ID.
+   Calls GET /returns/{id}/status on the live backend.
 ========================================================= */
 
-checkReturnButton.addEventListener("click", function () {
+checkReturnButton.addEventListener("click", async function () {
 
     const returnId =
         returnIdInput.value.trim();
@@ -219,14 +283,55 @@ checkReturnButton.addEventListener("click", function () {
     }
 
 
-    returnStatusResult.innerHTML = `
-        <strong>Return ID:</strong> #${returnId}<br>
-        <strong>Associated Order:</strong> #18<br>
-        <strong>Reason:</strong> Wrong Brand<br>
-        <strong>Return Status:</strong> Pending
-    `;
+    try {
 
-    returnStatusResult.classList.add("show");
+        const response =
+            await fetch(`${API_BASE_URL}/returns/${returnId}/status`);
+
+
+        if (response.status === 404) {
+
+            returnStatusResult.textContent =
+                "Return not found. Please check the ID.";
+
+            returnStatusResult.classList.add("show");
+
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            returnStatusResult.textContent =
+                "Something went wrong. Please try again.";
+
+            returnStatusResult.classList.add("show");
+
+            return;
+        }
+
+
+        const data =
+            await response.json();
+
+
+        returnStatusResult.innerHTML = `
+            <strong>Return ID:</strong> #${data.id}<br>
+            <strong>Associated Order:</strong> #${data.order_id}<br>
+            <strong>Reason:</strong> ${data.reason}<br>
+            <strong>Return Status:</strong> ${data.status}
+        `;
+
+        returnStatusResult.classList.add("show");
+
+
+    } catch (error) {
+
+        returnStatusResult.textContent =
+            "Could not reach the server. Please try again shortly.";
+
+        returnStatusResult.classList.add("show");
+    }
 
 });
 
@@ -235,18 +340,13 @@ checkReturnButton.addEventListener("click", function () {
 /* =========================================================
    5. SUPPORT INTENT CLASSIFIER
 
-   This is a simple frontend demonstration.
-
-   The JavaScript checks keywords in the customer's
-   message and determines the most likely support category.
-
-   This is not AI and does not connect to a backend.
+   Calls POST /support/classify on the live backend.
 ========================================================= */
 
-classifyButton.addEventListener("click", function () {
+classifyButton.addEventListener("click", async function () {
 
     const message =
-        supportMessage.value.trim().toLowerCase();
+        supportMessage.value.trim();
 
 
     if (message === "") {
@@ -260,58 +360,55 @@ classifyButton.addEventListener("click", function () {
     }
 
 
-    let intent =
-        "General Support";
+    try {
+
+        const response =
+            await fetch(`${API_BASE_URL}/support/classify`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: message })
+            });
 
 
-    /*
-        Check the message for common keywords.
-    */
+        if (!response.ok) {
 
-    if (
-        message.includes("where") ||
-        message.includes("track") ||
-        message.includes("delivery") ||
-        message.includes("package")
-    ) {
+            classificationResult.textContent =
+                "Something went wrong classifying your message.";
 
-        intent =
-            "Order Tracking";
+            classificationResult.classList.add("show");
 
-    } else if (
-        message.includes("return") ||
-        message.includes("wrong") ||
-        message.includes("defective")
-    ) {
+            return;
+        }
 
-        intent =
-            "Return Request";
 
-    } else if (
-        message.includes("refund") ||
-        message.includes("money back")
-    ) {
+        const data =
+            await response.json();
 
-        intent =
-            "Refund Request";
 
-    } else if (
-        message.includes("available") ||
-        message.includes("stock") ||
-        message.includes("size")
-    ) {
+        const labelMap = {
+            "order_status": "Order Tracking",
+            "return_query": "Return Request"
+        };
 
-        intent =
-            "Product Availability";
+        const intentLabel =
+            labelMap[data.category] || data.category;
 
+
+        classificationResult.innerHTML = `
+            <strong>Detected Intent:</strong> ${intentLabel}
+            <br><small>Confidence: ${(data.confidence * 100).toFixed(0)}%</small>
+        `;
+
+        classificationResult.classList.add("show");
+
+
+    } catch (error) {
+
+        classificationResult.textContent =
+            "Could not reach the server. Please try again shortly.";
+
+        classificationResult.classList.add("show");
     }
-
-
-    classificationResult.innerHTML = `
-        <strong>Detected Intent:</strong> ${intent}
-    `;
-
-    classificationResult.classList.add("show");
 
 });
 
@@ -347,7 +444,7 @@ exampleButtons.forEach(function (button) {
    These buttons currently show a simple browser message.
 
    They can later be connected to the real order data
-   when the backend is provided.
+   when needed as a dedicated feature.
 ========================================================= */
 
 const orderButtons =
