@@ -1,6 +1,5 @@
-# Support Deflection MVP — Database Schema
-
-## Database
+@'
+# Database Schema — Northstar Support Deflection MVP
 
 PostgreSQL
 
@@ -12,8 +11,14 @@ Stores customer order information required for order-status checks.
 |---|---|---|
 | id | SERIAL | PRIMARY KEY |
 | order_number | TEXT | UNIQUE, NOT NULL |
+| customer_name | TEXT | NOT NULL, DEFAULT 'Unknown Customer' |
+| product_name | TEXT | NOT NULL, DEFAULT 'Unknown Product' |
 | status | TEXT | NOT NULL |
 | created_at | TIMESTAMP | NOT NULL, DEFAULT NOW() |
+
+Allowed order statuses: `pending`, `shipped`, `delivered`, `returned`
+
+> `customer_name` and `product_name` added via `004_fix_orders_columns.sql`, per ARD Section 3.
 
 ---
 
@@ -42,20 +47,5 @@ Stores return requests associated with orders.
 | status | TEXT | NOT NULL |
 | created_at | TIMESTAMP | NOT NULL, DEFAULT NOW() |
 
-Allowed return statuses:
-
-- pending
-- approved
-- refunded
-
----
-
-# Relationships
-
-orders
-    ↓
-order_items
-
-orders
-    ↓
-returns
+Allowed return statuses: `pending`, `approved`, `refunded`
+'@ | Set-Content -Path docs/schema.md
