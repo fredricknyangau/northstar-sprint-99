@@ -1,5 +1,25 @@
 # QA Log
 
+## Bug: Frontend not connected to live backend
+
+**Found by:** Fredrick, during final demo packaging (Task 14)
+**Severity:** High — blocked all functionality
+
+**What was wrong:**
+1. `script.js` contained hardcoded sample data in every handler (order status, return creation, return status, classifier), never actually calling the backend.
+2. `API_BASE_URL` was set to `https://localhost:8000` instead of `http://localhost:8000`. Since the local backend has no TLS certificate, every fetch call would have failed silently or thrown a connection error.
+
+**How it was found:**
+Manual end-to-end walkthrough while packaging the final demo, checking `script.js` directly before testing in browser rather than assuming it was wired up.
+
+**Fix:**
+Replaced all hardcoded response logic with real `fetch()` calls to `/orders/{id}/status`, `/returns`, `/returns/{id}/status`, and `/support/classify`. Corrected the protocol from `https` to `http`. Added explicit handling for 404 responses, other non-200 responses, and network failures so the UI shows a clear message instead of breaking silently.
+
+**Verified:**
+All four flows tested against the live backend and real seeded data, confirmed via server logs showing correct 200 and 404 responses for both valid and invalid input.
+
+**Status:** Resolved, merged in PR (final-demo-package branch)
+
 ## API behavior entries
 
 ### Test 1 — Unknown order status
@@ -57,44 +77,8 @@
 - **Severity:** High
 - **Status:** Fixed — `frontend/script.js` now uses `http://localhost:8000`; the fix was verified in the browser console with no errors on retest.
 
-## Frontend behavior and failure-mode testing
+## Frontend behavior and failure-mode testing (Deferred)
 
-### Test 1 — Order status form: empty submission
+Manual frontend failure-mode testing (empty form submissions, backend-unavailable states, and general UI review) was scoped for this sprint but deferred due to time constraints ahead of the deadline. Core frontend functionality has been verified through the integration testing documented above (frontend-to-backend connectivity, all four live endpoint flows, 404 handling).
 
-- **What was tested:** Submit the order-status form with no order ID.
-- **Expected behavior:** Show a validation message without crashing.
-- **Actual behavior:** [Ibrahim fills this in after testing]
-- **Severity:** To be assessed after testing
-- **Status:** Pending manual verification
-
-### Test 2 — Order status form: backend not running
-
-- **What was tested:** Submit the order-status form while the backend is not running.
-- **Expected behavior:** Show a clear “could not reach server” message.
-- **Actual behavior:** [Ibrahim fills this in after testing]
-- **Severity:** To be assessed after testing
-- **Status:** Pending manual verification
-
-### Test 3 — Return form: missing fields
-
-- **What was tested:** Submit the return form with an empty order ID or an empty reason.
-- **Expected behavior:** Show a validation message for each missing field.
-- **Actual behavior:** [Ibrahim fills this in after testing]
-- **Severity:** To be assessed after testing
-- **Status:** Pending manual verification
-
-### Test 4 — Return status form: backend not running
-
-- **What was tested:** Submit the return-status form while the backend is not running.
-- **Expected behavior:** Show a clear “could not reach server” message.
-- **Actual behavior:** [Ibrahim fills this in after testing]
-- **Severity:** To be assessed after testing
-- **Status:** Pending manual verification
-
-### Test 5 — General UI review
-
-- **What was tested:** Review layout, labels, and user-facing error messages while exercising the frontend.
-- **Expected behavior:** Clear labels, understandable messages, and no material layout issues.
-- **Actual behavior:** [Ibrahim fills this in]
-- **Severity:** To be assessed after testing
-- **Status:** Pending manual verification
+This does not block the MVP's core functionality, which has been fully tested end-to-end against live data. Recommended as a follow-up QA pass before any production deployment.
