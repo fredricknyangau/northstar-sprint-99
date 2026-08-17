@@ -1,4 +1,4 @@
-## Day 2 Reflection — Fredrick
+## Day 2 Reflection - Fredrick
 
 ### What happened
 
