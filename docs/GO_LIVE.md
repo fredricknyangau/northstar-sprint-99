@@ -1,4 +1,4 @@
-# Northstar Retail Co. — Go-Live Readiness
+# Northstar Retail Co. - Go-Live Readiness
 
 ## What Works
 
